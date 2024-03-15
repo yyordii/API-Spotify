@@ -1,0 +1,215 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: black;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2em;
+  color: #fff;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  background-color: black; /* Dark background color */
+  color: #fff; /* Light text color */
+  font-family: Arial, sans-serif; /* Use a nice, readable font */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Make the body fill the viewport */
+  padding-top: 60px;   
+} 
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vanilla:hover {
+  filter: drop-shadow(0 0 2em #f7df1eaa);
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+#title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2em;
+  color: #fff;
+}
+
+#avatar img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover; /* Make the image cover the available space without stretching */
+  border-radius: 50%; /* Make the image circular */
+  margin-bottom: 20px; /* Add some space below the image */
+}
+
+#topTracks, #playlists {
+  text-align: center; /* Center the text of the top tracks */
+  list-style-type: none; /* Remove the default list bullets */
+  padding: 0; /* Remove the default list padding */
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+td {
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  color: #333;
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) td {
+  background-color: #e6e6e6;
+}
+
+tr:hover td {
+  background-color: #d4e2d4;
+  color: #414141;
+}
+
+#logoutButton{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 10px;
+}
+
+#playlists {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 79%; /* Adjust the width of the container */
+  margin: 20px auto; /* Center the container */
+}
+
+.playlistBox {
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  color: #333;
+  background-color: #f2f2f2;
+  width: calc(30% - 10px); /* Adjust the width of the boxes */
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+#buttonContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#buttonContainer button {
+  margin-bottom: 10px; /* Add some space below the buttons */
+}
+
+#searchButton{
+  margin-top: 60px;
+}
+#searchInput {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  width: 200px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
+}
+
+#searchInput:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  right: 20px;
+}
