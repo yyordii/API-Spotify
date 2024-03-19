@@ -2,32 +2,76 @@ const clientId = "8e0fdfd222d34d7d91ffc33171e10000";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 const logginButton = document.getElementById("loginButton");
-const profileInfo = document.getElementById("profileInfo");
 const profileElement = document.getElementById("profile");
 const searchButton = document.getElementById("searchButton");
 const searchInput = document.getElementById("searchInput");
+const goBackButton = document.getElementById("goBackButton");
+const logoutButton = document.getElementById("logoutButton");
+
+goBackButton.addEventListener("click", async () => {
+    // Hide search input, results, and "Go Back" button
+    searchInput.style.display = "none";
+    document.getElementById("searchResults").style.display = "none";
+    goBackButton.style.display = "none";
+
+    // Fetch data again
+    accessToken = await getAccessToken(clientId, code);
+    const profile = await fetchProfile(accessToken);
+    const topTracks = await fetchTopTracks(accessToken);
+    const playlists = await fetchPlaylists(accessToken);
+
+    // Populate UI
+    populateUI(profile);
+    populateTopTracks(topTracks);
+    populatePlaylists(playlists);
+    populateSearchResults(results);
+
+    // Show user's info
+    document.getElementById("profile").style.display = "block";
+    document.getElementById("info").style.display = "block";
+    document.getElementById("topTracks").style.display = "block";
+    document.getElementById("playlists").style.display = "block";
+    document.getElementById("searchBar").style.display = "block";
+});
+
+window.onpopstate = () => {
+   
+    searchInput.style.display = "none";
+    document.getElementById("searchResults").style.display = "none";
+    goBackButton.style.display = "none";
+
+    // Show user's info
+    document.getElementById("profile").style.display = "block";
+    document.getElementById("info").style.display = "block";
+    document.getElementById("topTracks").style.display = "block";
+    document.getElementById("playlists").style.display = "block";
+    document.getElementById("searchBar").style.display = "block"; 
+};
+
 
 searchButton.addEventListener("click", async () => {
     const query = searchInput.value;
 
-    // Check if the query is not empty
+    goBackButton.style.display = "block"; 
+
+
+
+
     if (query.trim() !== "") {
         try {
             const results = await searchSongs(query, accessToken);
-            
-            // Hide other elements
+
+         
             document.getElementById("profile").style.display = "none";
             document.getElementById("info").style.display = "none";
             document.getElementById("topTracks").style.display = "none";
             document.getElementById("playlists").style.display = "none";
-            
-            // Show search input and results
+
             searchInput.style.display = "block";
             document.getElementById("searchResults").style.display = "block";
-            
+
             populateSearchResults(results);
 
-            // Add a new entry to the browser's history
             history.pushState({}, '');
         } catch (error) {
             console.error('Error:', error);
@@ -45,44 +89,31 @@ searchInput.addEventListener("keydown", async (event) => {
     }
 });
 
-window.onpopstate = () => {
-    // Hide search input, results, and "Go Back" button
-    searchInput.style.visibility = "hidden";
-    document.getElementById("searchResults").style.visibility = "hidden";
-    goBackButton.style.visibility = "hidden";
 
-    // Show user's info
-    document.getElementById("profile").style.visibility = "visible";
-    document.getElementById("info").style.visibility = "visible";
-    document.getElementById("topTracks").style.visibility = "visible";
-    document.getElementById("playlists").style.visibility = "visible";
-};
-
-// Rest of your code...
 searchInput.addEventListener("keydown", async (event) => {
     if (event.key === "Enter") {
         const query = searchInput.value;
         const results = await searchSongs(query, accessToken);
-        
-        // Hide other elements
+
+       
         document.getElementById("profile").style.visibility = "hidden";
         document.getElementById("info").style.visibility = "hidden";
         document.getElementById("topTracks").style.visibility = "hidden";
         document.getElementById("playlists").style.visibility = "hidden";
-        
-        // Show search input, results, and "Go Back" button
+
+   
         searchInput.style.visibility = "visible";
         document.getElementById("searchResults").style.visibility = "visible";
         goBackButton.style.visibility = "visible";
-        
+
         populateSearchResults(results);
     }
 });
 searchButton.addEventListener("click", () => {
     if (searchInput.style.display === "none") {
-        searchInput.style.display = "block"; // Show the input box
+        searchInput.style.display = "block"; 
     } else {
-        searchInput.style.display = "none"; // Hide the input box
+        searchInput.style.display = "none"; 
     }
 });
 
@@ -92,7 +123,7 @@ logginButton.addEventListener("click", () => {
 
     if (!code) {
         redirectToAuthCodeFlow(clientId);
-        
+
     }
 });
 
@@ -104,13 +135,12 @@ document.getElementById("logoutButton").addEventListener("click", () => {
 
 
 let accessToken = null;
-let profile = {};
 const searchBar = document.getElementById("searchBar");
 
 if (code) {
     logoutButton.style.display = "block";
     logginButton.style.display = "none";
-    searchBar.style.display = "block"; // Show the search bar
+    searchBar.style.display = "block"; 
     accessToken = await getAccessToken(clientId, code);
     const profile = await fetchProfile(accessToken);
     const topTracks = await fetchTopTracks(accessToken);
@@ -303,15 +333,37 @@ function populateSearchResults(results) {
 document.getElementById("searchButton").addEventListener("click", async () => {
     const query = document.getElementById("searchInput").value;
     const results = await searchSongs(query, accessToken);
-    
+
     // Hide other elements
 
     document.getElementById("profile").style.display = "none";
     document.getElementById("info").style.display = "none";
     document.getElementById("topTracks").style.display = "none";
     document.getElementById("playlists").style.display = "none";
-    
+
     // Show search results
     document.getElementById("searchResults").style.display = "block";
     populateSearchResults(results);
 });
+
+async function fetchCurrentPlayingTrack(accessToken) {
+    if (!accessToken) {
+        redirectToAuthCodeFlow(clientId);
+        return;
+    }
+
+    const result = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+        method: "GET", headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    if (!result.ok) {
+        if (result.status === 401) {
+            // Access token is invalid, redirect to login page
+            redirectToAuthCodeFlow(clientId);
+        } else {
+            throw new Error(`HTTP error! status: ${result.status}`);
+        }
+    }
+
+    return await result.json();
+}
