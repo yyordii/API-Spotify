@@ -1,4 +1,4 @@
-const clientId = "8e0fdfd222d34d7d91ffc33171e10000";
+const clientId = "Your_Client_ID";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 const logginButton = document.getElementById("loginButton");
